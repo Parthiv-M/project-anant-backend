@@ -10,6 +10,7 @@ datasource db {
 model mxene {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId
   mxene           String  @unique
+  topology        topology?
   M1              String
   M2              String
   T1              String
@@ -22,6 +23,26 @@ model mxene {
   bands_dat       String  @unique
   poscar_file     String  @unique
   bands_png       String  @unique
+}
+
+model topology {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  mxene           mxene?   @relation(fields: [mxeneId], references: [id])
+  mxeneId         String?  @map("mxene") @db.ObjectId
+  M1              String
+  M2              String
+  T1              String
+  T2              String
+  X               String
+  mag_state       String
+  latticeConstant String
+  socBandGap      String
+  magneticMoment  String
+  soc_calculated  Boolean
+  top_props       String[]
+  soc_band        String  @unique
+  surf_img        String  @unique
+  berry_img       String  @unique
 }
 
 model mxeneProposals {

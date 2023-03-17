@@ -21,6 +21,8 @@ import faqRouter from "@routes/extras/faqs";
 import emailRouter from "@routes/extras/email";
 //importing helthcheck route
 import healthCheckRouter from "@routes/extras/healthcheck";
+import topologySearchRouter from "@routes/search/topology";
+import topologyDownloadRouter from "@routes/download/topology";
 
 // iniitalizing express server
 const server: Application = express();
@@ -45,6 +47,8 @@ server.use(helmet());
 // giving access to the pdb and the image forlder of the database folder publically
 const pdb_file_locations = process.env.MXENE_DOWNLOAD_RESOLVER + "/pdb";
 const band_images_locations = process.env.MXENE_DOWNLOAD_RESOLVER + "/band_plots";
+const soc_bands_locations = process.env.TOPOLOGY_DATA_RESOLVER + "/soc_bands";
+const surf_berry_locations = process.env.TOPOLOGY_DATA_RESOLVER + "/surf_berry";
 const staticOptions = {
     dotfiles: 'deny',
     etag: true,
@@ -53,6 +57,8 @@ const staticOptions = {
 }
 server.use('/static/pdb', express.static(pdb_file_locations, staticOptions));
 server.use('/static/image', express.static(band_images_locations, staticOptions));
+server.use('/static/image/soc_bands', express.static(soc_bands_locations, staticOptions));
+server.use('/static/image/surf_berry', express.static(surf_berry_locations, staticOptions));
 
 // @route   GET /
 // @desc    dummy route for testing
@@ -65,6 +71,9 @@ server.get("/", (req: Request, res: Response) => {
 server.use("/searchmxene", mxeneSearchRouter)
 server.use("/downloadmxene", mxeneDownloadRouter)
 server.use("/mutatemxene", mutateMxeneRouter)
+// topology routes
+server.use("/searchtopology", topologySearchRouter)
+server.use("/downloadtopology", topologyDownloadRouter)
 // extra routes
 server.use("/publications", publicationsRouter)
 server.use("/updates", updatesRouter)
