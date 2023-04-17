@@ -45,6 +45,19 @@ model topology {
   berry_img       String  @unique
 }
 
+model twoDMaterial {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  compound        String
+  F1              String
+  F2              String
+  M               String
+  latticeParam    String
+  formationEnergy String
+  eHull           String
+  phononFreq      String
+  poscar_data     String
+}
+
 model mxeneProposals {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   mxene           String @unique

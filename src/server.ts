@@ -23,6 +23,8 @@ import emailRouter from "@routes/extras/email";
 import healthCheckRouter from "@routes/extras/healthcheck";
 import topologySearchRouter from "@routes/search/topology";
 import topologyDownloadRouter from "@routes/download/topology";
+import twoDSearchRouter from "@routes/search/twoD";
+import twoDDownloadRouter from "@routes/download/twoDMaterial";
 
 // iniitalizing express server
 const server: Application = express();
@@ -74,6 +76,9 @@ server.use("/mutatemxene", mutateMxeneRouter)
 // topology routes
 server.use("/searchtopology", topologySearchRouter)
 server.use("/downloadtopology", topologyDownloadRouter)
+// 2D material routes
+server.use("/search2D", twoDSearchRouter)
+server.use("/download2D", twoDDownloadRouter)
 // extra routes
 server.use("/publications", publicationsRouter)
 server.use("/updates", updatesRouter)
