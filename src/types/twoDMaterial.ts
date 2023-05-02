@@ -15,6 +15,7 @@ interface searchObjects {
     F2?: F & string;
     M?: M & string;
     currentPage?: number;
+    isSuggest?: boolean;
 }
 
 export {

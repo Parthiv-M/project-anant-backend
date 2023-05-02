@@ -21,6 +21,7 @@ interface searchObjects {
     T1?: T & string;
     T2?: T & string;
     currentPage?: number;
+    isSuggest?: boolean;
 }
 
 interface requestBodyForAddingMxene {

@@ -25,6 +25,7 @@ import topologySearchRouter from "@routes/search/topology";
 import topologyDownloadRouter from "@routes/download/topology";
 import twoDSearchRouter from "@routes/search/twoD";
 import twoDDownloadRouter from "@routes/download/twoDMaterial";
+import suggestSearchRouter from "@routes/search/suggest";
 
 // iniitalizing express server
 const server: Application = express();
@@ -80,6 +81,7 @@ server.use("/downloadtopology", topologyDownloadRouter)
 server.use("/search2D", twoDSearchRouter)
 server.use("/download2D", twoDDownloadRouter)
 // extra routes
+server.use("/suggestsearch", suggestSearchRouter);
 server.use("/publications", publicationsRouter)
 server.use("/updates", updatesRouter)
 server.use("/faqs", faqRouter)
