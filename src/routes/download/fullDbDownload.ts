@@ -1,7 +1,7 @@
 import { fullDownload } from '@helpers/extras';
 import { Router, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import ThirdParty from "supertokens-node/recipe/thirdparty";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
 
 const downloadRouter = Router();
 
