@@ -1,6 +1,7 @@
 import { fullDownload } from '@helpers/extras';
 import { Router, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import ThirdParty from "supertokens-node/recipe/thirdparty";
 
 const downloadRouter = Router();
 
@@ -20,6 +21,9 @@ downloadRouter.get('/:dbType',
             res.status(400).json({ errors: errors.array() });
         }
 
+        let userId = req.session!.getUserId();
+        let userInfo = await ThirdParty.getUserById(userId);
+        console.log("ui: ", userInfo);
         try {
             const { dbType } = req.params;
             const downloadResults = await fullDownload(

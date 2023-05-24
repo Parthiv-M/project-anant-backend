@@ -6,12 +6,17 @@ import { stringify } from 'csv-stringify/sync';
 const prisma = new PrismaClient();
 
 const downloadTopologyData = async (queryParameters: string) => {
-    const query = queryParameters.split(',').map(value => {
-        let idObject = { id: value };
-        return (
-            idObject
-        )
-    });
+    let query;
+    if (queryParameters === "fulldb") {
+        query = undefined;
+    } else {
+        query = queryParameters.split(',').map(value => {
+            let idObject = { id: value };
+            return (
+                idObject
+            )
+        });
+    }
     const downloadResults = await prisma.topology.findMany({
         where: {
             OR: query

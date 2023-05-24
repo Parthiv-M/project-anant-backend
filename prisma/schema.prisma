@@ -102,8 +102,8 @@ model users {
   fullName              String
   organisation          String
   designation           String
-  mxeneDownloadCount    String
-  topoDownloadCount     String
-  twoDDownloadCount     String
-  thermoDownloadCount   String
+  mxeneDownloadCount    Int
+  topoDownloadCount     Int
+  twoDDownloadCount     Int
+  thermoDownloadCount   Int
 }
