@@ -9,7 +9,7 @@ const downloadRouter = Router();
 // @desc    route to download db
 // @access  Protected
 downloadRouter.get('/:dbType',
-    // verifySession(),
+    verifySession(),
     body('fullName').isString().withMessage('Valid name is required'),
     body('email').isString().withMessage('Valid email is required'),
     body('designation').isString().withMessage('Valid designation is required'),
@@ -21,9 +21,6 @@ downloadRouter.get('/:dbType',
             res.status(400).json({ errors: errors.array() });
         }
 
-        let userId = req.session!.getUserId();
-        let userInfo = await ThirdParty.getUserById(userId);
-        console.log("ui: ", userInfo);
         try {
             const { dbType } = req.params;
             const downloadResults = await fullDownload(
@@ -33,7 +30,6 @@ downloadRouter.get('/:dbType',
                 req.body.organisation,
                 req.body.designation
             );
-            console.log("dr: ", downloadResults)
             res.writeHead(200, {
                 'Content-Type': "application/zip",
             })

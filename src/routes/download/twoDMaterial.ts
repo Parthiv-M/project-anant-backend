@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { param, validationResult } from 'express-validator';
 import download2DData from '@helpers/twoD/queries/download/twoD.download';
-// import { verifySession } from "supertokens-node/recipe/session/framework/express";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
 
 const twoDDownloadRouter = Router();
 
@@ -10,7 +10,7 @@ const twoDDownloadRouter = Router();
 // @access  Protected
 twoDDownloadRouter.get('/',
     param('id').isEmpty().withMessage('ID value is required'),
-    // verifySession(),
+    verifySession(),
     async (req: Request, res: Response) => {
         console.log(req.query)
         const errors = validationResult(req);
