@@ -97,6 +97,13 @@ model publications {
 }
 
 model users {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
+  id                    String @id @default(auto()) @map("_id") @db.ObjectId
+  email                 String @unique
+  fullName              String
+  organisation          String
+  designation           String
+  mxeneDownloadCount    Int
+  topoDownloadCount     Int
+  twoDDownloadCount     Int
+  thermoDownloadCount   Int
 }

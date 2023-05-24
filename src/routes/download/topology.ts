@@ -1,7 +1,7 @@
 import { downloadTopologyData } from '@helpers/topology/queries';
 import { Router, Request, Response } from 'express';
 import { param, validationResult } from 'express-validator';
-// import { verifySession } from "supertokens-node/recipe/session/framework/express";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
 
 const topologyDownloadRouter = Router();
 
@@ -10,7 +10,7 @@ const topologyDownloadRouter = Router();
 // @access  Protected
 topologyDownloadRouter.get('/',
     param('id').isEmpty().withMessage('ID value is required'),
-    // verifySession(),
+    verifySession(),
     async (req: Request, res: Response) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
