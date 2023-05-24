@@ -6,12 +6,17 @@ import { stringify } from 'csv-stringify/sync';
 const prisma = new PrismaClient();
 
 const download2DData = async (queryParameters: string) => {
-    const query = queryParameters.split(',').map(value => {
-        let idObject = { id: value };
-        return (
-            idObject
-        )
-    });
+    let query;
+    if (queryParameters === "fulldb") {
+        query = undefined;
+    } else {
+        query = queryParameters.split(',').map(value => {
+            let idObject = { id: value };
+            return (
+                idObject
+            )
+        });
+    }
     const downloadResults = await prisma.twoDMaterial.findMany({
         where: {
             OR: query
@@ -55,7 +60,6 @@ const createDownloadZip = async (downloadInformation: any) => {
         zipFile.file(`${downloadInformation[searchResult].compound}.csv`, csv);
     }
     const zipFile = await zip.generateAsync({ type: 'base64' });
-    console.log(zipFile)
     return zipFile;
 }
 

@@ -26,6 +26,7 @@ import topologyDownloadRouter from "@routes/download/topology";
 import twoDSearchRouter from "@routes/search/twoD";
 import twoDDownloadRouter from "@routes/download/twoDMaterial";
 import suggestSearchRouter from "@routes/search/suggest";
+import downloadRouter from "@routes/download/fullDbDownload";
 
 // iniitalizing express server
 const server: Application = express();
@@ -87,6 +88,7 @@ server.use("/updates", updatesRouter)
 server.use("/faqs", faqRouter)
 server.use("/healthcheck", healthCheckRouter)
 server.use("/email", emailRouter);
+server.use("/dbdownload", downloadRouter);
 
 // authentication routes
 // @route   GET /sessioninfo
