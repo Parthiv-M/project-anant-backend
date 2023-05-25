@@ -8,7 +8,7 @@ const downloadRouter = Router();
 // @route   GET /dbdownload/:dbType
 // @desc    route to download db
 // @access  Protected
-downloadRouter.get('/:dbType',
+downloadRouter.post('/:dbType',
     verifySession(),
     body('fullName').isString().withMessage('Valid name is required'),
     body('email').isString().withMessage('Valid email is required'),
