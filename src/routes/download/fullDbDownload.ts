@@ -14,6 +14,7 @@ downloadRouter.post('/:dbType',
     body('email').isString().withMessage('Valid email is required'),
     body('designation').isString().withMessage('Valid designation is required'),
     body('organisation').isString().withMessage('Valid organisation is required'),
+    body('reason').isString().withMessage('Valid reason is required'),
     async (req: Request, res: Response) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -28,7 +29,8 @@ downloadRouter.post('/:dbType',
                 req.body.email,
                 req.body.fullName,
                 req.body.organisation,
-                req.body.designation
+                req.body.designation,
+                req.body.reason
             );
             res.writeHead(200, {
                 'Content-Type': "application/zip",

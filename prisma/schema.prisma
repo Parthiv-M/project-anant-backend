@@ -106,4 +106,5 @@ model users {
   topoDownloadCount     Int
   twoDDownloadCount     Int
   thermoDownloadCount   Int
+  reason                String[]
 }

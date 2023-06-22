@@ -1,5 +1,4 @@
 import emailjs, { EmailJSResponseStatus } from "@emailjs/nodejs";
-import { downloadMxeneDetails } from "@helpers/mxene/queries";
 import { downloadTopologyData } from "@helpers/topology/queries";
 import download2DData from "@helpers/twoD/queries/download/twoD.download";
 import { PrismaClient } from '@prisma/client';
@@ -12,9 +11,8 @@ emailjs.init({
 });
 
 const sendEmail = async (emailType: string, emailJSData: any, dbType: string) => {
-    let emailResult;
     try {
-        emailResult = await emailjs.send(
+        await emailjs.send(
             emailJSData.serviceID,
             emailJSData.templateID,
             {
@@ -34,10 +32,9 @@ const sendEmail = async (emailType: string, emailJSData: any, dbType: string) =>
             return;
         }
     }
-    console.log(emailResult)
 }
 
-const updateUserInfo = async (userInfo: { fullName: string, organisation: string, designation: string }, email: string, dbType: string) => {
+const updateUserInfo = async (userInfo: { fullName: string, organisation: string, designation: string }, email: string, dbType: string, reason: string) => {
     const emailExists = await prisma.users.findMany({
         where: { email: email },
         select: {
@@ -54,7 +51,8 @@ const updateUserInfo = async (userInfo: { fullName: string, organisation: string
         mxeneDownloadCount: 0,
         topoDownloadCount: 0,
         twoDDownloadCount: 0,
-        thermoDownloadCount: 0
+        thermoDownloadCount: 0,
+        reason: [reason]
     }
     if (emailExists.length === 0) {
         if (dbType === "mxene") {
@@ -87,6 +85,9 @@ const updateUserInfo = async (userInfo: { fullName: string, organisation: string
                 },
                 thermoDownloadCount: {
                     increment: dbType === "thermo" ? 1 : 0
+                },
+                reason: {
+                    push: reason
                 }
             }
         })
@@ -94,7 +95,7 @@ const updateUserInfo = async (userInfo: { fullName: string, organisation: string
     }
 }
 
-const fullDownload = async (dbType: string, email: string, fromName: string, org: string, designation: string) => {
+const fullDownload = async (dbType: string, email: string, fromName: string, org: string, designation: string, reason: string) => {
     let emailJSData = {
         templateID: "template_gpd4r8n",
         serviceID: "service_evvcvey",
@@ -109,7 +110,8 @@ const fullDownload = async (dbType: string, email: string, fromName: string, org
     switch (dbType) {
         case "mxene":
             modDbType = "MXene";
-            downloadResults = await downloadMxeneDetails("fulldb");
+            const ZIP_LINK = process.env.MXENE_DB_ZIP_LINK;
+            downloadResults = ZIP_LINK;
             break;
         case "topology":
             modDbType = "Topology";
@@ -134,8 +136,8 @@ const fullDownload = async (dbType: string, email: string, fromName: string, org
         const user = await updateUserInfo({
             fullName: fromName,
             organisation: org,
-            designation: designation
-        }, email, dbType);
+            designation: designation,
+        }, email, dbType, reason);
         if (user) {
             return downloadResults;
         }
