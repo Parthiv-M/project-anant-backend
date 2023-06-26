@@ -1,7 +1,9 @@
-import { fullDownload } from '@helpers/extras';
+
+import { fullDownload, sendEmail, updateUserInfo } from '@helpers/extras';
 import { Router, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { verifySession } from "supertokens-node/recipe/session/framework/express";
+import fs from "fs";
 
 const downloadRouter = Router();
 
@@ -24,23 +26,51 @@ downloadRouter.post('/:dbType',
 
         try {
             const { dbType } = req.params;
-            const downloadResults = await fullDownload(
-                dbType,
-                req.body.email,
-                req.body.fullName,
-                req.body.organisation,
-                req.body.designation,
-                req.body.reason
-            );
-            res.writeHead(200, {
-                'Content-Type': "application/zip",
-            })
-            return res.end(downloadResults);
+            if (dbType === "mxene") {
+                var stat = fs.statSync(process.env.MXENE_DB_ZIP_LINK);
+                res.writeHead(200, {
+                    'Content-Type': 'application/zip',
+                    'Content-Length': stat.size
+                });
+                let emailJSData = {
+                    templateID: "template_gpd4r8n",
+                    serviceID: "service_evvcvey",
+                    fromEmail: "anantiiscmrc@gmail.com",
+                    toEmail: req.body.email,
+                    fromName: "Team aNANt",
+                    fullName: req.body.fullName,
+                    organisation: req.body.organisation,
+                    designation: req.body.designation
+                }
+                var readStream = fs.createReadStream(process.env.MXENE_DB_ZIP_LINK);
+                readStream.pipe(res);
+                await sendEmail("admin", emailJSData, "MXene");
+                await sendEmail("user", emailJSData, "MXene");
+                await updateUserInfo({
+                    fullName: req.body.fullName,
+                    organisation: req.body.organisation,
+                    designation: req.body.designation,
+                }, req.body.email, dbType, req.body.reason);
+                return res.status(200).json({ message: "All good" });
+            } else {
+                const downloadResults = await fullDownload(
+                    dbType,
+                    req.body.email,
+                    req.body.fullName,
+                    req.body.organisation,
+                    req.body.designation,
+                    req.body.reason
+                );
+                res.writeHead(200, {
+                    'Content-Type': 'application/zip',
+                });
+                return res.end(downloadResults);
+            }
         } catch (error) {
             // microservice for logging. Use winston or other logging library
             console.log(error);
             res.setHeader('Content-Type', 'application/json');
-            return  res.status(400).json(error);
+            return res.status(400).json(error);
         }
     })
 

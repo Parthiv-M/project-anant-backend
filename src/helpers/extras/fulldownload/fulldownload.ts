@@ -146,4 +146,4 @@ const fullDownload = async (dbType: string, email: string, fromName: string, org
     return null;
 }
 
-export default fullDownload;
+export { fullDownload, sendEmail, updateUserInfo };
