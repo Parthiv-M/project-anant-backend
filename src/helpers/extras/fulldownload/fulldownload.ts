@@ -2,6 +2,7 @@ import emailjs, { EmailJSResponseStatus } from "@emailjs/nodejs";
 import { downloadTopologyData } from "@helpers/topology/queries";
 import download2DData from "@helpers/twoD/queries/download/twoD.download";
 import { PrismaClient } from '@prisma/client';
+import fs from "fs";
 
 const prisma = new PrismaClient();
 
@@ -110,8 +111,8 @@ const fullDownload = async (dbType: string, email: string, fromName: string, org
     switch (dbType) {
         case "mxene":
             modDbType = "MXene";
-            const ZIP_LINK = process.env.MXENE_DB_ZIP_LINK;
-            downloadResults = ZIP_LINK;
+            const zipFileToSend = fs.readFileSync(process.env.MXENE_DB_ZIP_LINK);
+            downloadResults = zipFileToSend;
             break;
         case "topology":
             modDbType = "Topology";

@@ -19,7 +19,7 @@ downloadRouter.post('/:dbType',
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.setHeader('Content-Type', 'application/json');
-            res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         }
 
         try {
@@ -35,12 +35,12 @@ downloadRouter.post('/:dbType',
             res.writeHead(200, {
                 'Content-Type': "application/zip",
             })
-            res.end(downloadResults);
+            return res.end(downloadResults);
         } catch (error) {
             // microservice for logging. Use winston or other logging library
             console.log(error);
             res.setHeader('Content-Type', 'application/json');
-            res.status(400).json(error);
+            return  res.status(400).json(error);
         }
     })
 
