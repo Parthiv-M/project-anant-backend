@@ -53,6 +53,7 @@ const pdb_file_locations = process.env.MXENE_DOWNLOAD_RESOLVER + "/pdb";
 const band_images_locations = process.env.MXENE_DOWNLOAD_RESOLVER + "/band_plots";
 const soc_bands_locations = process.env.TOPOLOGY_DATA_RESOLVER + "/soc_bands";
 const surf_berry_locations = process.env.TOPOLOGY_DATA_RESOLVER + "/surf_berry";
+const mxene_db_location = process.env.FULL_DB_LOCATION + "/mxene_database.zip";
 const staticOptions = {
     dotfiles: 'deny',
     etag: true,
@@ -63,6 +64,7 @@ server.use('/static/pdb', express.static(pdb_file_locations, staticOptions));
 server.use('/static/image', express.static(band_images_locations, staticOptions));
 server.use('/static/image/soc_bands', express.static(soc_bands_locations, staticOptions));
 server.use('/static/image/surf_berry', express.static(surf_berry_locations, staticOptions));
+server.use('/static/fulldb/mxene', express.static(mxene_db_location, staticOptions));
 
 // @route   GET /
 // @desc    dummy route for testing
