@@ -11,6 +11,10 @@ emailjs.init({
 });
 
 const sendEmail = async (emailType: string, emailJSData: any, dbType: string) => {
+    let extra_info 
+        = dbType.toLowerCase() === "mxene"
+            ? "Password of zip file that will be downloaded is "
+            + process.env.MXENE_DB_PASSWORD : "NA";
     try {
         await emailjs.send(
             emailJSData.serviceID,
@@ -23,7 +27,10 @@ const sendEmail = async (emailType: string, emailJSData: any, dbType: string) =>
                 full_name: emailJSData.fullName,
                 designation: emailJSData.designation,
                 organisation: emailJSData.organisation,
-                db_type: dbType
+                db_type: dbType,
+                extra_information: dbType.toLowerCase() === "mxene"
+                                    ? (emailType === "user" ? extra_info : "Password for MXene database sent to user")
+                                    : "NA"
             },
         );
     } catch (err) {
@@ -95,7 +102,14 @@ const updateUserInfo = async (userInfo: { fullName: string, organisation: string
     }
 }
 
-const fullDownload = async (dbType: string, email: string, fromName: string, org: string, designation: string, reason: string) => {
+const fullDownload = async (
+    dbType: string,
+    email: string,
+    fromName: string,
+    org: string,
+    designation: string,
+    reason: string
+) => {
     let emailJSData = {
         templateID: "template_gpd4r8n",
         serviceID: "service_evvcvey",
