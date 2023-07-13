@@ -58,6 +58,32 @@ model twoDMaterial {
   poscar_data     String
 }
 
+model thermoelectric {
+  id                        String @id @default(auto()) @map("_id") @db.ObjectId
+  materialFull              Json[]
+  materialForSearch         String
+  E1                        String
+  E2                        String
+  E3                        String
+  E4                        String
+  E5                        String
+  latticeConstant           String
+  bandGap                   String
+  spaceGroup                String
+  poscar_file               String
+  elect_band_structure      String
+  deform_potential          String
+  elect_dos                 String
+  elf                       String
+  group_velo                String
+  gru_param                 String
+  lattice_conduc            String
+  lattice_conduc_data       String
+  phonon_band               String
+  phonon_dos                String
+  figure_of_merit           String
+}
+
 model mxeneProposals {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   mxene           String @unique

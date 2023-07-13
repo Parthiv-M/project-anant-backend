@@ -27,6 +27,8 @@ import twoDSearchRouter from "@routes/search/twoD";
 import twoDDownloadRouter from "@routes/download/twoDMaterial";
 import suggestSearchRouter from "@routes/search/suggest";
 import downloadRouter from "@routes/download/fullDbDownload";
+import thermoSearchRouter from "@routes/search/thermo";
+import thermoDownloadRouter from "@routes/download/thermo";
 
 // iniitalizing express server
 const server: Application = express();
@@ -54,6 +56,20 @@ const band_images_locations = process.env.MXENE_DOWNLOAD_RESOLVER + "/band_plots
 const soc_bands_locations = process.env.TOPOLOGY_DATA_RESOLVER + "/soc_bands";
 const surf_berry_locations = process.env.TOPOLOGY_DATA_RESOLVER + "/surf_berry";
 const mxene_db_location = process.env.FULL_DB_LOCATION + "/mxene_database.zip";
+
+// thermoelectric DB paths
+const deform_poten = process.env.THERMO_DATA_RESOLVER + "/deform_poten";
+const elec_bands = process.env.THERMO_DATA_RESOLVER + "/elec_bands";
+const elect_dos = process.env.THERMO_DATA_RESOLVER + "/elec_dos";
+const elf = process.env.THERMO_DATA_RESOLVER + "/elf";
+const group_velo = process.env.THERMO_DATA_RESOLVER + "/group_velocity";
+const gru_param = process.env.THERMO_DATA_RESOLVER + "/gru_params";
+const lattic_conduc = process.env.THERMO_DATA_RESOLVER + "/lattice_conduc";
+// const lattice_conduc_data = process.env.THERMO_DATA_RESOLVER + "/Lattice_Thermal_Conductivity_Data_Files";
+const phonon_bands = process.env.THERMO_DATA_RESOLVER + "/phonon_bands";
+const phonon_dos = process.env.THERMO_DATA_RESOLVER + "/phonon_dos";
+const figure_of_merit = process.env.THERMO_DATA_RESOLVER + "/fig_of_merit";
+
 const staticOptions = {
     dotfiles: 'deny',
     etag: true,
@@ -65,6 +81,17 @@ server.use('/static/image', express.static(band_images_locations, staticOptions)
 server.use('/static/image/soc_bands', express.static(soc_bands_locations, staticOptions));
 server.use('/static/image/surf_berry', express.static(surf_berry_locations, staticOptions));
 server.use('/static/fulldb/mxene', express.static(mxene_db_location, staticOptions));
+// thermoelectric DB paths
+server.use('/static/image/elec_bands', express.static(elec_bands, staticOptions));
+server.use('/static/image/deform_poten', express.static(deform_poten, staticOptions));
+server.use('/static/image/elec_dos', express.static(elect_dos, staticOptions));
+server.use('/static/image/elf', express.static(elf, staticOptions));
+server.use('/static/image/group_velocity', express.static(group_velo, staticOptions));
+server.use('/static/image/gru_params', express.static(gru_param, staticOptions));
+server.use('/static/image/lattice_conduc', express.static(lattic_conduc, staticOptions));
+server.use('/static/image/phonon_bands', express.static(phonon_bands, staticOptions));
+server.use('/static/image/phonon_dos', express.static(phonon_dos, staticOptions));
+server.use('/static/image/fig_of_merit', express.static(figure_of_merit, staticOptions));
 
 // @route   GET /
 // @desc    dummy route for testing
@@ -83,6 +110,9 @@ server.use("/downloadtopology", topologyDownloadRouter)
 // 2D material routes
 server.use("/search2D", twoDSearchRouter)
 server.use("/download2D", twoDDownloadRouter)
+// thermoelectric routes
+server.use("/searchthermo", thermoSearchRouter);
+server.use("/downloadthermo", thermoDownloadRouter);
 // extra routes
 server.use("/suggestsearch", suggestSearchRouter);
 server.use("/publications", publicationsRouter)

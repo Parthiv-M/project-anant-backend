@@ -2,6 +2,7 @@ import fetch2DDetails from "@helpers/twoD/queries/search/twoD.search";
 import { fetchTopologyDetails } from "@helpers/topology/queries";
 import { fetchMxeneDetails } from "@helpers/mxene/queries";
 import SuggestSearchProps from "@typeDeclarations/suggestSearch";
+import { fetchThermoDetails } from "@helpers/thermo/queries";
 
 const suggestSearch = async (suggestSearchProps: SuggestSearchProps) => {
     const { searchParameters, responseElementName, toSuggestFieldName, maxIndex } = suggestSearchProps;
@@ -75,6 +76,29 @@ const suggestSearch = async (suggestSearchProps: SuggestSearchProps) => {
                 indexesFull.push(3);
             }
             searchResults = await fetch2DDetails(searchParameters);
+            searchResults[responseElementName].forEach((item: any) => {
+                itemsArray.push(item[toSuggestFieldName]);
+            });
+            delete searchResults[responseElementName];
+            break;
+        case "thermoMaterials":
+            origIndexes = ["E1", "E2", "E3", "E4", "E5"];
+            if (searchParameters.E1 && searchParameters.E1 !== "") {
+                indexesFull.push(1);
+            }
+            if (searchParameters.E2 && searchParameters.E2 !== "") {
+                indexesFull.push(2);
+            }
+            if (searchParameters.E3 && searchParameters.E3 !== "") {
+                indexesFull.push(3);
+            }
+            if (searchParameters.E4 && searchParameters.E4 !== "") {
+                indexesFull.push(4);
+            }
+            if (searchParameters.E5 && searchParameters.E5 !== "") {
+                indexesFull.push(5);
+            }
+            searchResults = await fetchThermoDetails(searchParameters);
             searchResults[responseElementName].forEach((item: any) => {
                 itemsArray.push(item[toSuggestFieldName]);
             });

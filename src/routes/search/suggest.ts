@@ -27,6 +27,10 @@ suggestSearchRouter.post("/", async (req, res) => {
             suggestParams.responseElementName = "twoDmaterials";
             suggestParams.toSuggestFieldName = "compound";
             suggestParams.maxIndex = 3;
+        } else if (type === "thermo") {
+            suggestParams.responseElementName = "thermoMaterials";
+            suggestParams.toSuggestFieldName = "materialForSearch";
+            suggestParams.maxIndex = 5;
         }
         const suggestSearchResults
             = await suggestSearch(suggestParams);
